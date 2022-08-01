@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.NearMapper">
+
+
+    <select id="selectfacByPageAndCondition" resultType="pojo.near">
+        select communame,facname as nearName from near_facility
+            <where>
+                <if test="Near.communame !=null and Near.communame !=''">
+                    and communame like #{Near.communame}
+                </if>
+                <if test="Near.nearName !=null and Near.nearName !=''">
+                    and nearName like #{Near.nearName}
+                </if>
+            </where>
+        limit #{begin} , #{size}
+    </select>
+    <select id="selectfacTotalCountByCondition" resultType="java.lang.Integer">
+select count(*)
+from near_facility
+        <where>
+            <if test="communame !=null and communame !=''">
+                and communame like #{communame}
+            </if>
+            <if test="nearName !=null and nearName !=''">
+                and nearName like #{nearName}
+            </if>
+        </where>
+
+    </select>
+    <select id="selecthosByPageAndCondition" resultType="pojo.near">
+        select communame,hosname as nearName from near_hospital
+        <where>
+            <if test="Near.communame !=null and Near.communame !=''">
+                and communame like #{Near.communame}
+            </if>
+            <if test="Near.nearName !=null and Near.nearName !=''">
+                and nearName like #{Near.nearName}
+            </if>
+        </where>
+        limit #{begin} , #{size}
+    </select>
+    <select id="selecthosTotalCountByCondition" resultType="java.lang.Integer">
+        select count(*)
+        from near_hospital
+        <where>
+            <if test="communame !=null and communame !=''">
+                and communame like #{communame}
+            </if>
+            <if test="nearName !=null and nearName !=''">
+                and nearName like #{nearName}
+            </if>
+        </where>
+    </select>
+    <select id="selectparkByPageAndCondition" resultType="pojo.near">
+        select communame,parkname as nearName from near_park
+        <where>
+            <if test="Near.communame !=null and Near.communame !=''">
+                and communame like #{Near.communame}
+            </if>
+            <if test="Near.nearName !=null and Near.nearName !=''">
+                and nearName like #{Near.nearName}
+            </if>
+        </where>
+        limit #{begin} , #{size}
+    </select>
+    <select id="selectparkTotalCountByCondition" resultType="java.lang.Integer">
+        select count(*)
+        from near_park
+        <where>
+            <if test="communame !=null and communame !=''">
+                and communame like #{communame}
+            </if>
+            <if test="nearName !=null and nearName !=''">
+                and nearName like #{nearName}
+            </if>
+        </where>
+    </select>
+    <select id="selectroadByPageAndCondition" resultType="pojo.near">
+        select communame,roadname as nearName from near_road
+        <where>
+            <if test="Near.communame !=null and Near.communame !=''">
+                and communame like #{Near.communame}
+            </if>
+            <if test="Near.nearName !=null and Near.nearName !=''">
+                and nearName like #{Near.nearName}
+            </if>
+        </where>
+        limit #{begin} , #{size}
+    </select>
+    <select id="selectroadTotalCountByCondition" resultType="java.lang.Integer">
+        select count(*)
+        from near_road
+        <where>
+            <if test="communame !=null and communame !=''">
+                and communame like #{communame}
+            </if>
+            <if test="nearName !=null and nearName !=''">
+                and nearName like #{nearName}
+            </if>
+        </where>
+    </select>
+    <select id="selectschByPageAndCondition" resultType="pojo.near">
+        select communame,schname as nearName from near_school
+        <where>
+            <if test="Near.communame !=null and Near.communame !=''">
+                and communame like #{Near.communame}
+            </if>
+            <if test="Near.nearName !=null and Near.nearName !=''">
+                and nearName like #{Near.nearName}
+            </if>
+        </where>
+        limit #{begin} , #{size}
+    </select>
+    <select id="selectschTotalCountByCondition" resultType="java.lang.Integer">
+        select count(*)
+        from near_school
+        <where>
+            <if test="communame !=null and communame !=''">
+                and communame like #{communame}
+            </if>
+            <if test="nearName !=null and nearName !=''">
+                and nearName like #{nearName}
+            </if>
+        </where>
+    </select>
+    <select id="selectshopByPageAndCondition" resultType="pojo.near">
+        select communame,shopname as nearName from near_shop
+        <where>
+            <if test="Near.communame !=null and Near.communame !=''">
+                and communame like #{Near.communame}
+            </if>
+            <if test="Near.nearName !=null and Near.nearName !=''">
+                and nearName like #{Near.nearName}
+            </if>
+        </where>
+        limit #{begin} , #{size}
+    </select>
+    <select id="selectshopTotalCountByCondition" resultType="java.lang.Integer">
+        select count(*)
+        from near_shop
+        <where>
+            <if test="communame !=null and communame !=''">
+                and communame like #{communame}
+            </if>
+            <if test="nearName !=null and nearName !=''">
+                and nearName like #{nearName}
+            </if>
+        </where>
+    </select>
+</mapper>

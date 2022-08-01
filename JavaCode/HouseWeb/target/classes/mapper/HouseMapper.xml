@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.HouseMapper">
+
+    <delete id="deleteHouse">
+        delete from housesrc
+<where>
+    district=#{district}
+and community=#{community}
+and building=#{building}
+and room=#{room}
+</where>
+    </delete>
+
+    <select id="selectByPageAndCondition" resultType="pojo.housesrc">
+        select*
+        from housesrc
+<where>
+    <if test="Housesrc.community !=null and Housesrc.community !=''">
+        and community like #{Housesrc.community}
+    </if>
+
+<if test="Housesrc.price != null and Housesrc.price != 0.0">
+    and price between #{Housesrc.price}-5 and #{Housesrc.price}+5
+</if>
+<if test="Housesrc.roomtype != null and Housesrc.roomtype !=''">
+    and roomtype like #{Housesrc.roomtype}
+</if>
+<if test="Housesrc.area != null and Housesrc.area != 0.0">
+    and area between #{Housesrc.area}-5 and #{Housesrc.area}+5
+</if>
+<if test="Housesrc.district != null and Housesrc.district != ''">
+    and district=#{Housesrc.district}
+</if>
+</where>
+limit #{begin} , #{size}
+
+    </select>
+    
+    
+    
+    <select id="selectTotalCountByCondition" resultType="java.lang.Integer">
+        select count(*)
+from housesrc
+        <where>
+            <if test="community !=null and community !=''">
+                and community like #{community}
+            </if>
+
+            <if test="price != null and price != 0.0">
+                and price between #{price}-5 and #{price}+5
+            </if>
+            <if test="roomtype != null and roomtype !=''">
+                and roomtype like #{roomtype}
+            </if>
+            <if test="area != null and area !=0.0">
+                and area between #{area}-5 and #{area}+5
+            </if>
+            <if test="district != null and district != ''">
+                and district=#{district}
+            </if>
+        </where>
+    </select>
+</mapper>

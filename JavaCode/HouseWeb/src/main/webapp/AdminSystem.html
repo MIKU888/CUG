@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>武汉房源查询系统</title>
+    <style>
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+
+
+    <!-- 表单   -->
+    <el-form :inline="true" :model="Housesrc" class="demo-form-inline">
+        <el-form-item label="行政区">
+            <el-select v-model="Housesrc.district" placeholder="行政区">
+                <el-option label="无" value=""></el-option>
+                <el-option label="东西湖区" value="东西湖区"></el-option>
+                <el-option label="新洲区" value="新洲区"></el-option>
+                <el-option label="武昌区" value="武昌区"></el-option>
+                <el-option label="汉南区" value="汉南区"></el-option>
+                <el-option label="汉阳区" value="汉阳区"></el-option>
+                <el-option label="江夏区" value="江夏区"></el-option>
+                <el-option label="江岸区" value="江岸区"></el-option>
+                <el-option label="江汉区" value="江汉区"></el-option>
+                <el-option label="洪山区" value="洪山区"></el-option>
+                <el-option label="硚口区" value="硚口区"></el-option>
+                <el-option label="蔡甸区" value="蔡甸区"></el-option>
+                <el-option label="青山区" value="青山区"></el-option>
+                <el-option label="黄陂区" value="黄陂区"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="小区">
+            <el-input v-model="Housesrc.community" placeholder="小区"></el-input>
+        </el-form-item>
+        <el-form-item label="售价">
+            <el-input v-model="Housesrc.price" placeholder="售价"></el-input>
+        </el-form-item>
+        <el-form-item label="房型">
+            <el-input v-model="Housesrc.roomtype" placeholder="房型"></el-input>
+        </el-form-item>
+        <el-form-item label="面积">
+            <el-input v-model="Housesrc.area" placeholder="面积"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="onSubmit">查询</el-button>
+        </el-form-item>
+    </el-form>
+    <el-row>
+        <el-button type="danger" plain @click="dialogVisible = true">添加房源</el-button>
+    </el-row>
+<!--    对话框-->
+    <el-dialog
+            title="编辑房源"
+            :visible.sync="dialogVisible"
+            width="30%"
+            >
+        <el-form ref="form" :model="Housesrc" label-width="80px">
+            <el-form-item label="行政区">
+                <el-select v-model="Housesrc.district" placeholder="行政区选择">
+                    <el-option label="东西湖区" value="东西湖区"></el-option>
+                    <el-option label="新洲区" value="新洲区"></el-option>
+                    <el-option label="武昌区" value="武昌区"></el-option>
+                    <el-option label="汉南区" value="汉南区"></el-option>
+                    <el-option label="汉阳区" value="汉阳区"></el-option>
+                    <el-option label="江夏区" value="江夏区"></el-option>
+                    <el-option label="江岸区" value="江岸区"></el-option>
+                    <el-option label="江汉区" value="江汉区"></el-option>
+                    <el-option label="洪山区" value="洪山区"></el-option>
+                    <el-option label="硚口区" value="硚口区"></el-option>
+                    <el-option label="蔡甸区" value="蔡甸区"></el-option>
+                    <el-option label="青山区" value="青山区"></el-option>
+                    <el-option label="黄陂区" value="黄陂区"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="小区名称">
+                <el-input v-model="Housesrc.community"></el-input>
+            </el-form-item>
+            <el-form-item label="楼栋号">
+                <el-input v-model="Housesrc.building"></el-input>
+            </el-form-item>
+            <el-form-item label="房号">
+                <el-input v-model="Housesrc.room"></el-input>
+            </el-form-item>
+            <el-form-item label="楼层">
+                <el-input v-model="Housesrc.r_layer"></el-input>
+            </el-form-item>
+            <el-form-item label="房型">
+                <el-input v-model="Housesrc.roomtype"></el-input>
+            </el-form-item>
+            <el-form-item label="面积">
+                <el-input v-model="Housesrc.area"></el-input>
+            </el-form-item>
+            <el-form-item label="价格">
+                <el-input v-model="Housesrc.price"></el-input>
+            </el-form-item>
+            <el-form-item label="平均价格">
+                <el-input v-model="Housesrc.av_price"></el-input>
+            </el-form-item>
+            <el-form-item label="朝向">
+                <el-input v-model="Housesrc.turn"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="addHouse">提交</el-button>
+                <el-button @click="dialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+  </span>
+    </el-dialog>
+
+
+
+    <el-dialog
+            title="编辑房源"
+            :visible.sync="dialogVisibleUpdate"
+            width="30%"
+    >
+        <el-form ref="form" :model="Housesrc" label-width="80px">
+            <el-form-item label="行政区">
+                <el-select v-model="Housesrc.district" placeholder="行政区选择">
+                    <el-option label="东西湖区" value="东西湖区"></el-option>
+                    <el-option label="新洲区" value="新洲区"></el-option>
+                    <el-option label="武昌区" value="武昌区"></el-option>
+                    <el-option label="汉南区" value="汉南区"></el-option>
+                    <el-option label="汉阳区" value="汉阳区"></el-option>
+                    <el-option label="江夏区" value="江夏区"></el-option>
+                    <el-option label="江岸区" value="江岸区"></el-option>
+                    <el-option label="江汉区" value="江汉区"></el-option>
+                    <el-option label="洪山区" value="洪山区"></el-option>
+                    <el-option label="硚口区" value="硚口区"></el-option>
+                    <el-option label="蔡甸区" value="蔡甸区"></el-option>
+                    <el-option label="青山区" value="青山区"></el-option>
+                    <el-option label="黄陂区" value="黄陂区"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="小区名称">
+                <el-input v-model="Housesrc.community"></el-input>
+            </el-form-item>
+            <el-form-item label="楼栋号">
+                <el-input v-model="Housesrc.building"></el-input>
+            </el-form-item>
+            <el-form-item label="房号">
+                <el-input v-model="Housesrc.room"></el-input>
+            </el-form-item>
+            <el-form-item label="楼层">
+                <el-input v-model="Housesrc.r_layer"></el-input>
+            </el-form-item>
+            <el-form-item label="房型">
+                <el-input v-model="Housesrc.roomtype"></el-input>
+            </el-form-item>
+            <el-form-item label="面积">
+                <el-input v-model="Housesrc.area"></el-input>
+            </el-form-item>
+            <el-form-item label="价格">
+                <el-input v-model="Housesrc.price"></el-input>
+            </el-form-item>
+            <el-form-item label="平均价格">
+                <el-input v-model="Housesrc.av_price"></el-input>
+            </el-form-item>
+            <el-form-item label="朝向">
+                <el-input v-model="Housesrc.turn"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="update_2">提交</el-button>
+                <el-button @click="dialogVisibleUpdate = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+        </span>
+    </el-dialog>
+    <!--    表格-->
+    <template>
+        <el-table
+                :data="tableData"
+                style="width: 100%"
+                :row-class-name="tableRowClassName">
+
+            <el-table-column
+                    prop="district"
+                    label="行政区"
+                    align="center"
+                    >
+            </el-table-column>
+            <el-table-column
+                    prop="community"
+                    label="小区"
+                    align="center"
+                   >
+            </el-table-column>
+            <el-table-column
+                    prop="building"
+                    label="楼栋"
+                    align="center"
+                    >
+            </el-table-column>
+            <el-table-column
+                    prop="room"
+                    label="房间号"
+                    align="center"
+                    >
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    align="center"
+            >
+                <template slot-scope="scope">
+                    <el-row>
+                        <el-button type="primary" @click="update_1(scope.$index, scope.row)">修改</el-button>
+                        <!--  每一行的index----------scope.$index     每一行的数据-----------scope.row-->
+                        <el-button type="danger" @click="deleteById(scope.$index, scope.row)">删除</el-button>
+                    </el-row>
+                </template>
+            </el-table-column>
+
+        </el-table>
+    </template>
+
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10,15, 20]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalCount">
+    </el-pagination>
+</div>
+
+
+
+
+</div>
+
+
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<script src="js/axios-0.18.0.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        mounted(){
+            this.selectAll()
+            //   var _this=this;
+            //
+            // //
+            //   axios({
+            //       method:"get",
+            //       url:"http://localhost:8080/HouseWeb/House/selectAll"
+            //   }).then(function (response){
+            //
+            //       _this.tableData=response.data;
+            //   })
+        },
+        methods: {
+            handleEdit(index, row) {
+                console.log(index, row);
+            },
+            handleDelete(index, row) {
+                console.log(index, row);
+            },
+            selectAll() {
+                var _this = this;
+
+                //
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/HouseWeb/House/selectByPageAndCondition?currentPage="+this.currentPage+"&pageSize="+this.pageSize,
+                    data:this.Housesrc
+                }).then(function (response) {
+
+                    _this.tableData = response.data.rows;
+                    _this.totalCount=response.data.totalCount;
+                })
+            },
+            //表单提交
+            onSubmit() {
+                this.selectAll()
+            },
+            //新增数据
+            addHouse(){
+                var _this=this;
+                 // console.log(this.Housesrc);
+                axios({
+                    method: "post",
+                    url:"http://localhost:8080/HouseWeb/House/addHouse",
+                    data:_this.Housesrc
+                }).then(function (resp) {
+                    if(resp.data="success"){
+                        _this.dialogVisible=false;
+                        _this.selectAll();
+                        _this.$message({
+                            showClose: true,
+                            message: '添加成功!!',
+                            type: 'success'
+                        });
+                    }
+                    else{
+                        _this.$message({
+                            showClose: true,
+                            message: '警告！！添加失败！！填写错误数据或该数据已存在！！',
+                            type: 'warning'
+                        });
+                    }
+                })
+            },
+
+            tableRowClassName({row, rowIndex}) {
+                if (rowIndex%4 === 3) {
+                    return 'warning-row';
+                } else if (rowIndex%4 === 1) {
+                    return 'success-row';
+                }
+                return '';
+            },
+            //页码
+            handleSizeChange(val) {
+                // console.log(`每页 ${val} 条`);
+                this.pageSize=val;
+                this.selectAll();
+            },
+            handleCurrentChange(val) {
+                // console.log(`当前页: ${val}`);
+                this.currentPage=val;
+                this.selectAll();
+            },
+            //修改数据
+            update_1(index,row){
+                //console.log(index,row); index:每行数据的index    row:每行的数据
+                this.dialogVisibleUpdate = true;
+                this.Housesrc = row;
+            },
+
+            // 提交修改
+            update_2(){
+                axios.post("http://localhost:8080/HouseWeb/House/updateHouse", this.Housesrc).then((res)=>{
+                    if(res.data === "success"){
+                        this.dialogVisibleUpdate = false;
+                        this.$message({
+                            message: '恭喜你，修改成功',
+                            type: 'success'
+                        });
+                        // 重新查询所有数据
+                        this.selectAll();
+                    }
+                })
+            },
+
+            //删除数据
+
+
+            deleteById(index, row) {
+                //console.log(index,row); index:每行数据的index    row:每行的数据
+                //1.弹出“确认删除”的提示框
+                this.Housesrc=row;
+
+                this.$confirm('此操作将删除该品牌数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    //用户点击“确认删除”
+
+                    //2.发送ajax请求，根据id删除品牌
+                    axios.post("http://localhost:8080/HouseWeb/House/deleteHouse",this.Housesrc).then((res) => {
+                        if (res.data === "success") {
+                            // 删除成功
+
+                            // 重新查询数据
+                            this.selectAll();
+
+                            // 弹出消息提示
+                            this.$message({
+                                message: '恭喜你，删除成功',
+                                type: 'success'
+                            });
+                        }
+                    })
+                }).catch(() => {
+                    // 用户点击取消按钮
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+
+        },
+        data() {
+
+
+            return {
+
+                //对话框
+                dialogVisibleUpdate:false,
+                dialogVisible: false,
+                //总记录数
+                pageSize:5,
+                totalCount:100,
+                //表单数据
+                Housesrc: {
+                    district: '',
+                    community: '',
+                    building:'',
+                    room:'',
+                    r_layer:'',
+
+                    price:'',
+                    av_price:'',
+                    turn:'',
+                    roomtype:'',
+                    area:''
+
+                },
+                //表格数据
+                tableData: [{
+                    district: '洪山区',
+                    community: '小区',
+                    building:'5',
+                    room:'10',
+
+                }],
+                //当前页码
+                currentPage: 1
+            }
+        }
+    })
+</script>
+</body>
+</html>

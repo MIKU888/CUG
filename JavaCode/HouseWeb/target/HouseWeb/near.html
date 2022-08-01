@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>周边查询</title>
+    <style>
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+
+    <!-- 表单   -->
+    <el-link  href="Main.html" type="primary" icon="el-icon-loading">查看房源</el-link>
+    <el-form :inline="true" :model="Near" class="demo-form-inline">
+        <el-form-item label="周边类型">
+            <el-select v-model="Near.nearclass" placeholder="周边类型">
+                <!--
+                此处需修改！！！
+                    此处需修改！！！
+                        此处需修改！！！
+                -->
+                <el-option label="公园" value="2"></el-option>
+                <el-option label="商店" value="5"></el-option>
+                <el-option label="服务设施" value="0"></el-option>
+                <el-option label="医院" value="1"></el-option>
+                <el-option label="学校" value="4"></el-option>
+                <el-option label="道路" value="3"></el-option>
+
+            </el-select>
+        </el-form-item>
+        <el-form-item label="小区">
+            <el-input v-model="Near.communame" placeholder="小区"></el-input>
+        </el-form-item>
+        <el-form-item label="周边名称">
+            <el-input v-model="Near.nearName" placeholder="周边名称"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="onSubmit">查询</el-button>
+        </el-form-item>
+    </el-form>
+
+    <!--    表格-->
+    <template>
+        <el-table
+                :data="tableData"
+                style="width: 100%"
+                :row-class-name="tableRowClassName">
+
+            <el-table-column
+                    prop="nearName"
+                    label="周边名称"
+                    align="center"
+                    >
+            </el-table-column>
+            <el-table-column
+                    prop="communame"
+                    label="小区"
+                    align="center"
+                    >
+            </el-table-column>
+
+        </el-table>
+    </template>
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10,15, 20]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalCount">
+    </el-pagination>
+</div>
+
+
+
+</div>
+
+
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<script src="js/axios-0.18.0.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        mounted(){
+            this.selectAll()
+            //   var _this=this;
+            //
+            // //
+            //   axios({
+            //       method:"get",
+            //       url:"http://localhost:8080/HouseWeb/House/selectAll"
+            //   }).then(function (response){
+            //
+            //       _this.tableData=response.data;
+            //   })
+        },
+        methods: {
+            //表单提交
+            selectAll() {
+                var _this = this;
+
+                //
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/HouseWeb/Near/selectByPageAndCondition?currentPage="+this.currentPage+"&pageSize="+this.pageSize,
+                    data:this.Near
+                }).then(function (response) {
+
+                    _this.tableData = response.data.rows;
+                    _this.totalCount=response.data.totalCount;
+                })
+            },
+            onSubmit() {
+                this.selectAll()
+            },
+
+            tableRowClassName({row, rowIndex}) {
+                if (rowIndex%4 === 3) {
+                    return 'warning-row';
+                } else if (rowIndex%4 === 1) {
+                    return 'success-row';
+                }
+                return '';
+            },
+            handleSizeChange(val) {
+                // console.log(`每页 ${val} 条`);
+                this.pageSize=val;
+                this.selectAll();
+            },
+            handleCurrentChange(val) {
+                // console.log(`当前页: ${val}`);
+                this.currentPage=val;
+                this.selectAll();
+            }
+        },
+        data() {
+
+
+            return {
+                pageSize:5,
+                totalCount:100,
+                //表单数据
+                Near: {
+                    near: '',
+                    communame: '',
+                    nearName:''
+
+                },
+                //表格数据
+                tableData: [{
+                    nearName: '2016-05-02',
+                    communame: '王小虎',
+                }],
+                currentPage: 1
+            }
+        }
+    })
+</script>
+</body>
+</html>
